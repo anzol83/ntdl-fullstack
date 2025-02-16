@@ -1,0 +1,16 @@
+{
+  "name": "ntdl-crud-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Angel",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.10.1"
+  }
+}
