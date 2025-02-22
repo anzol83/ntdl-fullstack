@@ -3,7 +3,7 @@
 import mongoose from "mongoose";
 
 const DATABASE_NAME = "ntdl_db";
-const CONNECTION_URI = "mongodb://localhost:27017/" + DATABASE_NAME;
+const CONNECTION_URI = process.env.CONNECTION_URI + DATABASE_NAME;
 
 export const connectToMongoDb = () => {
   try {
