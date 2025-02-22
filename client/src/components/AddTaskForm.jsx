@@ -1,78 +1,78 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { generateRandomId } from "../utility/generateRandomId";
+import { createTask } from "../axios/taskAxios";
+//import { generateRandomId } from "../utility/generateRandomId";
 
 const AddTaskForm = (props) => {
-  const { setTaskList } = props
-  
-  const [taskName, setTaskName] = useState("")
-  const [taskTime, setTaskTime] = useState("")
-
-  const handleOnSubmit = (e) => {
-    e.preventDefault()
-    
-    // STEP 1: Build the task object
+  const { fetchTasks } = props;
+  // can be used as single state also
+  const [taskName, setTaskName] = useState("");
+  const [taskTime, setTaskTime] = useState("");
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
+    //1. Build a task object
     const taskObject = {
-      taskName: taskName,
-      taskTime: taskTime,
-      type: "entry",
-      id: generateRandomId(),
+      name: taskName,
+      timeToComplete: taskTime,
+      type: "Entry",
+    };
+
+    // 2. send the api request to create data
+    const response = await createTask(taskObject);
+
+    if (response.status === "Success") {
+      alert("Task Created");
+      // clearing form fields
+      setTaskName("");
+      setTaskTime("");
+
+      // fetch the task list to keep FE sync with BE
+      fetchTasks();
     }
 
-    setTaskList((prevState) => [...prevState, taskObject])
-    // setTaskList([...taskList, taskObject])
-    setTaskName("")
-    setTaskTime("")
-  }
+    // adding object to array
+    //  setTaskList((prevState) => [...prevState, taskObject]);
+  };
 
-  // Handle task name input change
-  const handleOnTaskNameChange = (e) => {
-    const inputValue = e.target.value
+  //   Handle task name input change
+  const handleOnTaskNameChanged = (event) => {
+    setTaskName(event.target.value);
+  };
 
-    setTaskName(inputValue)
-  }
-
-  const handleOnTaskTimeChange = (e) => {
-    const inputValue = e.target.value
-
-    setTaskTime(inputValue)
-  }
-
-  
-  return ( 
+  //   Handle task spent input change
+  const handleOnTaskSpentChanged = (event) => {
+    setTaskTime(parseInt(event.target.value));
+  };
+  return (
     <form onSubmit={handleOnSubmit}>
       <div className="d-flex flex-column gap-4">
-        <input 
-          type="text" 
-          className="form-control" 
+        <input
+          type="text"
+          className="form-control"
           placeholder="Enter task name"
           name="taskName"
-          onChange={handleOnTaskNameChange}
           value={taskName}
+          onChange={handleOnTaskNameChanged}
           required
         />
 
-        <input 
-          type="number" 
-          className="form-control" 
+        <input
+          type="number"
+          className="form-control"
           placeholder="Enter time spent in hrs"
           name="taskTime"
           min="1"
           max="24"
-          onChange={handleOnTaskTimeChange}
           value={taskTime}
+          onChange={handleOnTaskSpentChanged}
           required
         />
 
-        <button 
-          className="btn btn-primary" 
-          type="submit"
-        >
+        <button className="btn btn-primary" type="submit">
           Add Task
         </button>
       </div>
     </form>
   );
-}
- 
+};
 export default AddTaskForm;

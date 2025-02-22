@@ -1,12 +1,20 @@
 import express from "express"
+import cors from "cors"
 import { connectToMondoDb } from "./src/config/dbConfig.js";
 import taskRouter from "./src/router/taskRouter.js";
 
 const app = express()
-const PORT = 8000
+const PORT = 3000
 
 // middleware to parse request
 app.use(express.json());
+
+//Define config for CORS
+const corsOption = {
+    credentials: true, 
+    origin: true // is an array with the list of whitelisted domain
+}
+app.use(cors(corsOption))
 
 //Connect to Mongo Db
 connectToMondoDb();
