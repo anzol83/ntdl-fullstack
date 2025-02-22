@@ -1,30 +1,29 @@
-import express from "express"
-import cors from "cors"
-import { connectToMondoDb } from "./src/config/dbConfig.js";
+import express from "express";
+import cors from "cors";
 import taskRouter from "./src/router/taskRouter.js";
+import { connectToMongoDb } from "./src/config/dbConfig.js";
 
-const app = express()
-const PORT = 3000
+const app = express();
+const PORT = 3000;
 
-// middleware to parse request
+// Middleware to parse data
 app.use(express.json());
 
-//Define config for CORS
+// Define config for cors
 const corsOption = {
-    credentials: true, 
-    origin: true // is an array with the list of whitelisted domain
-}
-app.use(cors(corsOption))
+  credential: true,
+  origin: true, // is an array with the list of whitelisted domains
+};
 
-//Connect to Mongo Db
-connectToMondoDb();
+app.use(cors(corsOption));
+// Connect to mongoDb
+connectToMongoDb();
 
 // Task Routes
-app.use('/api/tasks', taskRouter)
+app.use("/api/tasks", taskRouter);
 
-// Start a server
-app.listen(PORT, (error)=>{
-error?
-console.log("Error", error) :
-console.log("Your server is running at http://localhost:" + PORT )
-})
+app.listen(PORT, (error) => {
+  error
+    ? console.log(error.message)
+    : console.log("Server running successfully on http://localhost:" + PORT);
+});

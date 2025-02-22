@@ -1,18 +1,17 @@
-// This file is used to connect API with Db
+// This file is used to connect API with DB
 
 import mongoose from "mongoose";
 
-const DATABASE_NAME = 'ntdl-db'
-const CONNECTION_URI = 'mongodb://localhost:27017/' + DATABASE_NAME
+const DATABASE_NAME = "ntdl_db";
+const CONNECTION_URI = "mongodb://localhost:27017/" + DATABASE_NAME;
 
-export const connectToMondoDb = () => {
-    try {
-        const connect = mongoose.connect(CONNECTION_URI)
-
-        if(connect) {
-            console.log("Database connected at", CONNECTION_URI);
-        }
-    } catch (error) {
-        console.log("Db connection Error", error);
+export const connectToMongoDb = () => {
+  try {
+    const connect = mongoose.connect(CONNECTION_URI);
+    if (connect) {
+      console.log("Database connected at " + CONNECTION_URI);
     }
-}
+  } catch (error) {
+    console.log("DB Connection Error", error);
+  }
+};

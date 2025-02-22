@@ -1,104 +1,101 @@
-import express from 'express'
-import { createTask, deleteTask, getTasks } from '../model/taskModel.js'
+import express from "express";
+import {
+  createTask,
+  deleteTask,
+  getTask,
+  getTasks,
+  updateTask,
+} from "../model/taskModel.js";
 
-// Initializing express router
-const taskRouter = express.Router()
+// initializing express router
+const taskRouter = express.Router();
 
-// Index | Get all Tasks
+// Index ||  GET Tasks
 taskRouter.get("/", (req, res) => {
-    getTasks()
-    .then(tasks => {
-        res.json({
-            status: "success",
-            data: tasks
-        })
+  getTasks()
+    .then((tasks) => {
+      res.json({
+        status: "Success",
+        data: tasks,
+      });
     })
-    .catch(error => {
-        res.json({
-            status: "error",
-            error: error.message || 'Could not fetch task'
-        })
-    })
+    .catch((error) => {
+      res.json({
+        status: "error",
+        error: error.message || "Could not fetch data",
+      });
+    });
+});
 
-})
-
-// Show| Get single Task
+// SHOW ||  GET Task
 taskRouter.get("/:id", (req, res) => {
-    getTask(req.params.id)
-    .then(task => {
-        res.json({
-            status: "success",
-            data: tasks
-        })
+  getTask(req.params.id)
+    .then((task) => {
+      res.json({
+        status: "Success",
+        data: task,
+      });
     })
-    .catch(error => {
-        res.json({
-            status: "error",
-            error: error.message || 'Could not fetch task'
-        })
-    })
-})
+    .catch((error) => {
+      res.json({
+        status: "error",
+        error: error.message || "Could not fetch data",
+      });
+    });
+});
 
-// Show | Post Single Task
+// CREATE ||  POST single task
 taskRouter.post("/", (req, res) => {
-    const taskObject = req.body
-
-    createTask(taskObject)
-    .then(task => {
-        res.json({
-            status: "success",
-            message: "Task Created",
-            data: task
-        })
+  createTask(req.body)
+    .then((task) => {
+      res.json({
+        status: "Success",
+        message: "task created",
+        data: task,
+      });
     })
-    .catch(error => {
-        res.json({
-            status: "error",
-            error: error.message || 'Could not create task'
-        })
+    .catch((error) => {
+      res.json({
+        status: "Error",
+        error: error.message || " Could not create data",
+      });
+    });
+});
+
+// UPDATE ||  UPDATE  a task
+taskRouter.put("/:id", (req, res) => {
+  updateTask(req.params.id, req.body)
+    .then((task) => {
+      res.json({
+        status: "Success",
+        message: "task updated",
+        data: task,
+      });
     })
+    .catch((error) => {
+      res.json({
+        status: "Error",
+        error: error.message || " Could not update data",
+      });
+    });
+});
 
-})
-
-// Update | Patch single Task
-taskRouter.patch("/:id", (req, res) => {
-    const updatedTaskObject = req.body
-    const id = req.params.id
-
-    updateTask(updatedTaskObject)
-    .then(task => {
-        res.json({
-            status: "success",
-            message: "Task Updated",
-            data: task
-        })
-    })
-    .catch(error => {
-        res.json({
-            status: "error",
-            error: error.message || 'Could not update task'
-        })
-    })
-})
-
-
-//  Delete | Delete Tasks
+// DELETE ||  DELETE a task
 taskRouter.delete("/:id", (req, res) => {
-    deleteTask(req.params.id)
-    .then(task => {
-        res.json({
-            status: "success",
-            message: "task deleted",
-            data: task
-        })
+  deleteTask(req.params.id)
+    .then((task) => {
+      res.json({
+        status: "Success",
+        message: "task deleted",
+        data: task,
+      });
     })
-    .catch(error => {
-        res.json({
-            status: "error",
-            error: error.message || 'Could not delete task'
-        })
-    })
+    .catch((error) => {
+      res.json({
+        status: "error",
+        error: error.message || "Could not delete data",
+      });
+    });
+});
 
-})
-
-export default taskRouter
+export default taskRouter;
