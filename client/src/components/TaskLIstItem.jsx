@@ -8,10 +8,10 @@ const TaskListItem = (props) => {
   return (
     <tr>
       <td>{task.name}</td>
-      <td>{task.timeToComplete}hrs</td>
+      <td>{task.timeToComplete} hrs</td>
       <td className="text-end">
         <button
-          className="btn btn-danger btn-sm"
+          className="btn btn-danger btn-sm me-2"
           onClick={() => deleteTask(task._id)}
         >
           <i className="fa-trash fa-solid"></i>
@@ -25,7 +25,7 @@ const TaskListItem = (props) => {
         {task.type === "Entry" && (
           <button
             className="btn btn-success btn-sm"
-            onClick={() => switchTaskType(task._id)}
+            onClick={() => switchTaskType(task._id, task)}
           >
             <i className="fa-arrow-right-long fa-solid fa-sharp"></i>
           </button>
@@ -34,7 +34,7 @@ const TaskListItem = (props) => {
         {task.type === "Unwanted" && (
           <button
             className="btn btn-warning btn-sm"
-            onClick={() => switchTaskType(task._id)}
+            onClick={() => switchTaskType(task._id, task)}
           >
             <i className="fa-arrow-left-long fa-solid fa-sharp"></i>
           </button>

@@ -27,6 +27,15 @@ export const createTask = (taskObject) => {
   return response;
 };
 
+// UPDATE | Update a task
+export const updateTask = (taskId, updatedTask) => {
+  const response = axios
+    .put(API_BASE_URL + TASK_ENDPOINT + `/${taskId}`, updatedTask)
+    .then((res) => res.data)
+    .catch((error) => error);
+  return response;
+};
+
 // DELETE | Delete a task
 export const deleteTaskReq = (taskId) => {
   const response = axios

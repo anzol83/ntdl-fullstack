@@ -4,43 +4,46 @@ import AddTaskForm from "./components/AddTaskForm";
 import Header from "./components/Header";
 import TaskListItem from "./components/TaskListItem";
 import TotalTime from "./components/TotalTime";
-import { deleteTaskReq, getTasks } from "./axios/taskAxios";
+import { deleteTaskReq, getTasks, updateTask } from "./axios/taskAxios";
+
 function App() {
   // const storedTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
   const [taskList, setTaskList] = useState([]);
+
   const entryTypeTask = taskList.filter((task) => task.type === "Entry");
   const unwantedTypeTask = taskList.filter((task) => task.type === "Unwanted");
+
   const fetchTasks = async () => {
     const response = await getTasks();
     if (response.status === "Success") {
       setTaskList(response.data);
     }
   };
+
   // initialize task list state with data from database
   // to fetch data using api, we have to send request
   useEffect(() => {
-    // localStorage.setItem("taskList", JSON.stringify(taskList));
     fetchTasks();
   }, []);
+
   // Function to switch task type
-  const switchTaskType = (taskId) => {
-    const updatedTaskList = taskList.map((task) => {
-      if (task.id === taskId) {
-        task.type = task.type === "Entry" ? "Unwanted" : "Entry";
-      }
-      return task;
-    });
-    setTaskList(updatedTaskList);
+  const switchTaskType = async (taskId, task) => {
+    const switchTask = task.type === "Entry" ? "Unwanted" : "Entry";
+    const updatedTask = { ...task, type: switchTask };
+    const response = await updateTask(taskId, updatedTask);
+    if (response.status === "Success") {
+      fetchTasks();
+    }
   };
+
   // Function to delete task type
   const deleteTask = async (taskId) => {
     const response = await deleteTaskReq(taskId);
     if (response.status === "Success") {
       fetchTasks();
     }
-    //const updatedTaskList = taskList.filter((task) => task.id != taskId);
-    //    setTaskList(updatedTaskList);
   };
+
   return (
     <>
       {/* <!----Title section--> */}
@@ -59,6 +62,7 @@ function App() {
             <div className="col border p-4 rounded">
               {/* <!---All Task List--> */}
               <h3 className="text-center">Entry Task List</h3>
+
               <div
                 className="px-4"
                 style={{ height: `50vh`, overflowY: `auto` }}
@@ -83,6 +87,7 @@ function App() {
             <div className="col border p-4 rounded">
               {/* <!---All Task List--> */}
               <h3 className="text-center">Unwanted Task List</h3>
+
               <div
                 className="px-4"
                 style={{ height: `50vh`, overflowY: `auto` }}
@@ -104,6 +109,7 @@ function App() {
               </div>
             </div>
           </div>
+
           {/* <!---Second Row--> */}
           <div className="row gap-2 mt-4">
             {/* <!--First Column--> */}
@@ -124,4 +130,5 @@ function App() {
     </>
   );
 }
+
 export default App;
