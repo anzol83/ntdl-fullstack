@@ -1,5 +1,6 @@
 import express from "express"
-import { connectToMondoDb } from "./config/dbConfig";
+import { connectToMondoDb } from "./config/dbConfig.js";
+import taskRouter from "./router/taskRouter.js";
 
 const app = express()
 const PORT = 8000
@@ -9,6 +10,9 @@ app.use(express.json());
 
 //Connect to Mongo Db
 connectToMondoDb();
+
+// Task Routes
+app.use('/api/tasks', taskRouter)
 
 // Start a server
 app.listen(PORT, (error)=>{
