@@ -1,9 +1,11 @@
+import 'dotenv/config'
 import express from "express";
 import cors from "cors";
 import taskRouter from "./src/router/taskRouter.js";
 import { connectToMongoDb } from "./src/config/dbConfig.js";
-import 'dotenv/config'
+import path from "path"
 
+const _dirname = path.resolve()
 const app = express();
 const PORT = process.env.PORT || 3000
 
@@ -19,6 +21,9 @@ const corsOption = {
 app.use(cors(corsOption));
 // Connect to mongoDb
 connectToMongoDb();
+
+// SSR - serve frontend using our nodejs server
+app.use('/', express.static(path.join(_dirname, 'frontendBuild')) )
 
 // Task Routes
 app.use("/api/tasks", taskRouter);
